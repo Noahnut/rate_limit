@@ -19,6 +19,7 @@ type RateLimit struct {
 }
 
 const TokenBucketType AlgorithmType = 0
+const FixWindowCounterType AlgorithmType = 1
 
 // Can choose which rate limit algorithm want to use
 func NewRateLimiter(rds *redis.Client) *RateLimit {
@@ -34,13 +35,14 @@ func (r *RateLimit) RateLimiterInit(limits int, timeInterval int, algoritmType A
 	switch algoritmType {
 	case TokenBucketType:
 		r.algoritm = TokenBucketInit(r.rds, r.limits, r.timeInterval)
+	case FixWindowCounterType:
+		r.algoritm = FixWindowCounterInit(r.rds, r.limits, r.timeInterval)
 	}
 
 }
 
 func (r *RateLimit) StopRateLimiter() {
 	r.algoritm.EndRateLimit()
-	r.rds.Close()
 }
 
 func (r *RateLimit) RateLimiterChecker(limitKey string) bool {
