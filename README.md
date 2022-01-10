@@ -4,6 +4,7 @@ API Rate limit is a controller to limit the number of each IP or token to use th
 ## Current Provide Algorithm
 * Token Bucket Algorithm
 * Fix Window Counter Algorithm
+* Slide Window Log Algorithm
 
 
 ## install

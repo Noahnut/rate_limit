@@ -20,6 +20,7 @@ type RateLimit struct {
 
 const TokenBucketType AlgorithmType = 0
 const FixWindowCounterType AlgorithmType = 1
+const SlideWindowLogType AlgorithmType = 2
 
 // Can choose which rate limit algorithm want to use
 func NewRateLimiter(rds *redis.Client) *RateLimit {
@@ -37,6 +38,8 @@ func (r *RateLimit) RateLimiterInit(limits int, timeInterval int, algoritmType A
 		r.algoritm = TokenBucketInit(r.rds, r.limits, r.timeInterval)
 	case FixWindowCounterType:
 		r.algoritm = FixWindowCounterInit(r.rds, r.limits, r.timeInterval)
+	case SlideWindowLogType:
+		r.algoritm = SlideWindowLogInit(r.rds, r.limits, r.timeInterval)
 	}
 
 }
