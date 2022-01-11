@@ -13,9 +13,9 @@ Good for memory usage
 Easy to understand  
 **Cons**        
 if the request increasing when the interval change could couse the more request be allowed.
-* Slide Window Log Algorithm
+* Slide Window Log Algorithm.   
 **Pros**  
-Very accurate solve the Fix Window Counter Algorithm problem
+Very accurate solve the Fix Window Counter Algorithm problem.  
 **Cons**        
 Need more memory to record the request time stamp
 
