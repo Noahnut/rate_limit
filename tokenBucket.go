@@ -16,7 +16,7 @@ type TokenBucket struct {
 	limits       int
 	timeInterval int
 	lock         sync.RWMutex
-	bucketMap    map[string]struct{}
+	bucketMap    map[string]byte
 }
 
 func TokenBucketInit(rds *redis.Client, limits int, timeInterval int) *TokenBucket {
@@ -24,7 +24,7 @@ func TokenBucketInit(rds *redis.Client, limits int, timeInterval int) *TokenBuck
 		rds:          rds,
 		limits:       limits,
 		timeInterval: timeInterval,
-		bucketMap:    make(map[string]struct{}),
+		bucketMap:    make(map[string]byte),
 	}
 
 	t.ctx, t.cancel = context.WithCancel(context.Background())
@@ -58,7 +58,7 @@ func (t *TokenBucket) RateLimit(limitKey string) bool {
 	if err == redis.Nil {
 		t.rds.Set(t.ctx, limitKey+"_count", t.limits, 10*time.Minute)
 		t.lock.Lock()
-		t.bucketMap[limitKey+"_count"] = struct{}{}
+		t.bucketMap[limitKey+"_count"] = 0
 		t.lock.Unlock()
 	} else {
 		value, _ := t.rds.Get(t.ctx, limitKey+"_count").Result()
